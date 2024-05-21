@@ -1,0 +1,73 @@
+@model List<MUDEK.Models.Course>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ders Listesi</title>
+    <style>
+        .course-column {
+            float: left;
+            width: 33.33%;
+            padding: 0 10px;
+        }
+        .course-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .course-details {
+            margin-bottom: 20px;
+        }
+        .footer {
+            text-align: right;
+            padding: 20px;
+        }
+        .footer button {
+            margin-left: 10px;
+            padding: 5px 10px; 
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="font-size: 24px; font-weight: bold; margin-top: 20px;">@ViewBag.SelectedSemester Dönemi Dersleri</h1>
+
+    <form asp-controller="Home" asp-action="Degerlendirme" method="get">
+        <label for="selectedSemester">Dönem Seçiniz:</label>
+        <select name="selectedSemester" id="selectedSemester">
+            <option value="Bahar">2024 Bahar Dönemi</option>
+            <option value="Guz">2024 Güz Dönemi</option>
+            <!-- Diğer dönemler için gerekli option'ları ekleyin -->
+        </select>
+        <button type="submit">Dersleri Listele</button>
+    </form>
+
+    <div style="clear:both;"></div>
+
+    <div>
+        <label for="courseSelect">Ders Seçiniz:</label>
+        <select id="courseSelect" name="courseId">
+            @foreach (var course in Model)
+            {
+                <option value="@course.CourseId">@course.CourseName</option>
+            }
+        </select>
+        <button id="goToCourseButton" type="button" onclick="goToCourse()">Derse Git</button>
+    </div>
+
+    <form id="goToCourseForm" asp-controller="Home" asp-action="DegerlendirmeSayfasi" method="get" style="display:none;">
+        <input type="hidden" id="selectedCourseId" name="courseId" />
+    </form>
+
+    <script>
+        function goToCourse() {
+            var selectedCourseId = document.getElementById('courseSelect').value;
+            if (selectedCourseId) {
+                document.getElementById('selectedCourseId').value = selectedCourseId;
+                document.getElementById('goToCourseForm').submit();
+            } else {
+                alert("Lütfen bir ders seçiniz.");
+            }
+        }
+    </script>
+</body>
+</html>

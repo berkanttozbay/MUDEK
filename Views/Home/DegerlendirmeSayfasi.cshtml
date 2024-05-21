@@ -1,0 +1,145 @@
+@model MUDEK.Models.Course
+
+@{
+    ViewBag.Title = "Değerlendirme Sayfası";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <style>
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .content {
+            margin-top: 20px;
+        }
+        .course-column {
+            float: left;
+            width: 24%;
+            padding: 0 5px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .input-container {
+            margin-bottom: 10px;
+        }
+        .add-remove-button {
+            margin-top: 5px;
+        }
+        .form-footer {
+            text-align: right;
+            padding: 20px;
+           
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        @if(ViewBag.CourseName != null)
+        {
+            <p>Seçili Ders: @ViewBag.CourseName</p>
+        }
+        else
+        {
+            <p>Ders bulunamadı.</p>
+        }
+    </div>
+    <form asp-action="DegerlendirmeSayfasi" asp-controller="Home" method="post">
+        <div class="content">
+            <h2>Değerlendirme Detayları</h2>
+            @if (Model != null && Model.Degerlendirmeler.Any())
+            {
+                <div class="course-column">
+                    @for (int i = 0; i < Model.Degerlendirmeler.Count; i++)
+                    {
+                        var degerlendirme = Model.Degerlendirmeler[i];
+                        <div class="degerlendirme-detay">
+                            @foreach(var degerlendirmeName in degerlendirme.DegerlendirmeName)
+                            {
+                                <h3>@degerlendirmeName</h3>
+                            }
+                            <div class="alt-baslik-container input-container">
+                                <label for="altBaslik">Alt Başlık</label>
+                                @if (degerlendirme.DegerlendirmeAltBaslik != null && degerlendirme.DegerlendirmeAltBaslik.Any())
+                                {
+                                    foreach (var altBaslik in degerlendirme.DegerlendirmeAltBaslik)
+                                    {
+                                        <div>
+                                            <input type="text" class="alt-baslik-input" name="degerlendirmeler[@i].DegerlendirmeAltBaslik" value="@altBaslik" />
+                                            <button type="button" class="add-input-button">+</button>
+                                            <button type="button" class="remove-input-button">-</button>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div>
+                                        <input type="text" class="alt-baslik-input" name="degerlendirmeler[@i].DegerlendirmeAltBaslik" />
+                                        <button type="button" class="add-input-button">+</button>
+                                        <button type="button" class="remove-input-button">-</button>
+                                    </div>
+                                }
+                            </div>
+                            <div class="yuzde-container input-container">
+                                <label for="yuzde">Yüzde</label>
+                                @if (degerlendirme.DegerlendirmeYuzde != null && degerlendirme.DegerlendirmeYuzde.Any())
+                                {
+                                    foreach (var yuzde in degerlendirme.DegerlendirmeYuzde)
+                                    {
+                                        <div>
+                                            <input type="text" class="yuzde-input" name="degerlendirmeler[@i].DegerlendirmeYuzde" value="@yuzde" />
+                                            <button type="button" class="add-input-button">+</button>
+                                            <button type="button" class="remove-input-button">-</button>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div>
+                                        <input type="text" class="yuzde-input" name="degerlendirmeler[@i].DegerlendirmeYuzde" />
+                                        <button type="button" class="add-input-button">+</button>
+                                        <button type="button" class="remove-input-button">-</button>
+                                    </div>
+                                }
+                            </div>
+                            
+                        </div>
+                    }
+                    
+                </div>
+                
+            }
+            else
+            {
+                <p>Değerlendirme detayları bulunamadı.</p>
+            }
+            
+        </div>
+        <div class="form-footer">
+            <button type="submit">Kaydet</button>
+        </div>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // + butonuna basıldığında yeni bir input alanı ekleyen fonksiyon
+            $('.add-input-button').click(function () {
+                var container = $(this).parent();
+                var inputType = container.hasClass('alt-baslik-container') ? 'alt-baslik' : 'yuzde';
+                container.append('<div><input type="text" class="' + inputType + '-input" name="' + inputType + '" /></div>');
+            });
+
+            // - butonuna basıldığında son input alanını silen fonksiyon
+            $('.remove-input-button').click(function () {
+                var container = $(this).parent();
+                container.find('div:last-child').remove();
+            });
+        });
+    </script>
+</body>
+</html>

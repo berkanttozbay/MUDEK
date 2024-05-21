@@ -1,0 +1,150 @@
+@model MUDEK.Models.ViewModel
+
+<h1>Add Course</h1>
+
+<form asp-action="AddCourse" method="post">
+    <div class="form-group">
+        <label asp-for="Course.CourseName" class="control-label">Course Name</label>
+        <input asp-for="Course.CourseName" class="form-control" />
+        <span asp-validation-for="Course.CourseName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Course.CourseCode" class="control-label">Course Code</label>
+        <input asp-for="Course.CourseCode" class="form-control" />
+        <span asp-validation-for="Course.CourseCode" class="text-danger"></span>
+    </div>
+
+    <h1>Program Çıktıları</h1>
+
+    <h6>Semester</h6>
+    <div class="form-group">
+        <select asp-for="Course.CourseSemester" class="form-control">
+            <option value="Guz">Güz</option>
+            <option value="Bahar">Bahar</option>
+        </select>
+    </div>
+
+    <h6>Keywords and Descriptions</h6>
+    <div id="keywordDescriptionFields">
+        <div class="form-group keywordDescriptionRow">
+            <input type="text" name="Course.Keywords[0]" class="form-control keyword" placeholder="Keyword" />
+            <span asp-validation-for="Course.KeyWords" class="text-danger"></span>
+            <textarea name="Course.Descriptions[0]" class="form-control description" rows="2" placeholder="Description"></textarea>
+            <span asp-validation-for="Course.Descriptions" class="text-danger"></span>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary addFieldButton">+</button>
+                <button type="button" class="btn btn-danger removeFieldButton">-</button>
+            </div>
+        </div>
+    </div>
+
+    <h6>Değerlendirme Bilgileri</h6>
+    <div id="degerlendirmeFields">
+        <div class="form-group degerlendirmeRow">
+            <select name="Degerlendirme.DegerlendirmeName[0]" class="form-control">
+                <option value="Vize">Vize</option>
+                <option value="Final">Final</option>
+                <option value="Odev">Ödev</option>
+                <option value="Proje">Proje</option>
+                <option value="Quiz">Quiz</option>
+                <option value="Uygulama">Uygulama</option>
+                <option value="Sunum">Sunum</option>
+            </select>
+            @* <input type="text" name="Degerlendirme.DegerlendirmeAltBaslik[0]" class="form-control degerlendirmeAltBaslik" placeholder="Değerlendirme Alt Başlık" />
+            <input type="text" name="Degerlendirme.DegerlendirmeYuzde[0]" class="form-control degerlendirmeYuzde" placeholder="Değerlendirme Yüzde" /> *@
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary addFieldButton">+</button>
+                <button type="button" class="btn btn-danger removeFieldButton">-</button>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save All</button>
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger" role="alert">
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+</form>
+
+<style>
+    .keywordDescriptionRow, .degerlendirmeRow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .keywordDescriptionRow .form-control, .degerlendirmeRow .form-control {
+        flex: 1;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 5px;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var keywordIndex = 1;
+        var degerlendirmeIndex = 1;
+
+        // Keyword and Description ekleme ve çıkarma işlevi
+        $("#keywordDescriptionFields").on("click", ".addFieldButton", function() {
+            var keywordDescriptionField = '<div class="form-group keywordDescriptionRow">' +
+                '<input type="text" name="Course.Keywords[' + keywordIndex + ']" class="form-control keyword" placeholder="Keyword" />' +
+                '<textarea name="Course.Descriptions[' + keywordIndex + ']" class="form-control description" rows="2" placeholder="Description"></textarea>' +
+                '<div class="btn-group">' +
+                '<button type="button" class="btn btn-primary addFieldButton">+</button>' +
+                '<button type="button" class="btn btn-danger removeFieldButton">-</button>' +
+                '</div>' +
+                '</div>';
+
+            $("#keywordDescriptionFields").append(keywordDescriptionField);
+            keywordIndex++;
+            $(this).hide();  // Tıklanan ekleme butonunu gizle
+        });
+
+        $("#keywordDescriptionFields").on("click", ".removeFieldButton", function() {
+            $(this).closest('.keywordDescriptionRow').remove();
+        });
+
+        // Değerlendirme Bilgileri ekleme ve çıkarma işlevi
+        $("#degerlendirmeFields").on("click", ".addFieldButton", function() {
+            var degerlendirmeField = '<div class="form-group degerlendirmeRow">' +
+                '<select name="Degerlendirme.DegerlendirmeName[' + degerlendirmeIndex + ']" class="form-control">' +
+                '<option value="Vize">Vize</option>' +
+                '<option value="Final">Final</option>' +
+                '<option value="Ödev">Ödev</option>' +
+                '<option value="Proje">Proje</option>' +
+                '<option value="Quiz">Quiz</option>' +
+                '<option value="Uygulama">Uygulama</option>' +
+                '<option value="Sunum">Sunum</option>' +
+                '</select>' +
+                '<input type="text" name="Degerlendirme.DegerlendirmeAltBaslik[' + degerlendirmeIndex + ']" class="form-control degerlendirmeAltBaslik" placeholder="Değerlendirme Alt Başlık" />' +
+                '<input type="text" name="Degerlendirme.DegerlendirmeYuzde[' + degerlendirmeIndex + ']" class="form-control degerlendirmeYuzde" placeholder="Değerlendirme Yüzde" />' +
+                '<div class="btn-group">' +
+                '<button type="button" class="btn btn-primary addFieldButton">+</button>' +
+                '<button type="button" class="btn btn-danger removeFieldButton">-</button>' +
+                '</div>' +
+                '</div>';
+
+            $("#degerlendirmeFields").append(degerlendirmeField);
+            degerlendirmeIndex++;
+            $(this).hide();  // Tıklanan ekleme butonunu gizle
+        });
+
+        $("#degerlendirmeFields").on("click", ".removeFieldButton", function() {
+            $(this).closest('.degerlendirmeRow').remove();
+        });
+    });
+</script>
+

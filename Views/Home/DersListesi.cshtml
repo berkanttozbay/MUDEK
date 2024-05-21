@@ -1,0 +1,91 @@
+@model List<MUDEK.Models.Course>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ders Listesi</title>
+    <style>
+        .course-column {
+            float: left;
+            width: 33.33%;
+            padding: 0 10px;
+        }
+        .course-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .course-details {
+            margin-bottom: 20px;
+        }
+        .footer {
+            text-align: right;
+            padding: 20px;
+        }
+        .footer button {
+            margin-left: 10px;
+            padding: 5px  10px; 
+            font-size: 16px;
+        }
+        }
+    </style>
+</head>
+<body>
+    <form asp-controller="Home" asp-action="DersListesi" method="get">
+        <label for="selectedSemester">Dönem Seçiniz:</label>
+        <select name="selectedSemester" id="selectedSemester">
+            <option value="Bahar">2024 Bahar Dönemi</option>
+            <option value="Guz">2024 Güz Dönemi</option>
+            <!-- Diğer dönemler için gerekli option'ları ekleyin -->
+        </select>
+        <button type="submit">Dersleri Listele</button>
+    </form>
+
+    <h1 style="font-size: 24px; font-weight: bold; margin-top: 20px;">@ViewBag.SelectedSemester Dönemi Dersleri</h1>
+
+    <form id="selectedCoursesForm" asp-controller="Home" asp-action="SelectedCourses"  target="_blank">
+        <div class="course-column">
+            <div class="course-title">Kurs İsimleri</div>
+            <div class="course-details">
+                @foreach (var course in Model)
+                {
+                    <div>
+                        <label>
+                            <input type="checkbox" name="selectedCourses" value="@course.CourseName" /> @course.CourseName
+                        </label>
+                    </div>
+                    <br />
+                }
+            </div>
+        </div>
+
+        <div class="course-column">
+            <div class="course-title">Anahtar Kelimeler</div>
+            <div class="course-details">
+                @foreach (var course in Model)
+                {
+                    <div>@string.Join(", ", course.KeyWords)</div>
+                    <br />
+                }
+            </div>
+        </div>
+
+        <div class="course-column">
+            <div class="course-title">Tanımlar</div>
+            <div class="course-details">
+                @foreach (var course in Model)
+                {
+                    <div>@string.Join(", ", course.Descriptions)</div>
+                    <br />
+                }
+            </div>
+        </div>
+
+        <div class="footer">
+            <button type="submit">Devam Et</button>
+        </div>
+    </form>
+    
+
+    <div style="clear:both;"></div>
+</body>
+</html>

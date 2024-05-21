@@ -1,0 +1,232 @@
+@model List<MUDEK.Models.Course>
+<html>
+<head>
+    <title>Seçili Ders</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        /* Tablo hücrelerinin stilini belirle */
+        table, th, td {
+            border: 1px solid black;
+            padding: 0; /* Hücre içeriğini tamamen dolduracak */
+            text-align: center;
+        }
+        .course-column {
+            float: left;
+            width: 24%;
+            padding: 0 5px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .course-title {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .course-details {
+            margin-bottom: 20px;
+        }
+        /* Metin alanının stilini belirle */
+        input[type="number"] {
+        width: 100%; /* Hücrenin genişliğine tam olarak uyacak */
+        height: 100%; /* Hücrenin yüksekliğine tam olarak uyacak */
+        border: none; /* Kenarlık olmayacak */
+        padding: 8px; /* Boşluk ayarla */
+        box-sizing: border-box; /* Padding dahil olacak */
+    }
+        
+        }
+    </style>
+</head>
+<body>
+        <div class="course-column">
+                <div class="course-title"> Öğrenim Çıktıları</div>
+                <div class="course-details">
+        
+                @{
+            int totalCount = 0;
+            foreach (var course in Model)
+            {
+                totalCount += course.Descriptions.Count;
+            }
+
+            for (int k = 1; k <= totalCount; k++)
+            {
+                <p>Ö-@k</p>
+            }
+    
+                
+
+                
+            }                
+                </div>
+                </div>
+        <div class="course-column">
+                <div class="course-title"> Seçili Ders</div>
+                <div class="course-details">
+                    @{
+            
+                for (int k = 1; k <= totalCount; k++)
+                {
+                    
+                    foreach (var course in Model)
+                    {
+                        <p>@course.CourseName[k - 1]</p>
+                    }
+                }
+            }               
+                </div>
+            </div>
+            <div class="course-column">
+            <div class="course-title">Anahtar Kelimeler</div>
+            <div class="course-details">
+                @{
+            
+                for (int k = 1; k <= totalCount; k++)
+                {
+                    
+                    foreach (var course in Model)
+                    {
+                        <p>@course.KeyWords[k - 1]</p>
+                    }
+                }
+            }
+            </div>
+        </div>
+
+            <div class="course-column">
+    <div class="course-title"> Tanım</div>
+    <div class="course-details">
+        @{
+            
+            for (int k = 1; k <= totalCount; k++)
+            {
+                
+                foreach (var course in Model)
+                {
+                    <p>@course.Descriptions[k - 1]</p>
+                }
+            }
+        }
+    </div>
+</div>
+
+        <caption>PROGRAM ÇIKTILARI</caption>
+        @{
+        // Her hücreye yazılacak metinlerin bir listesi
+        string[] metinler = new string[] {
+            "matematik , fen bilimleri, mühendislik", "Matematik, fen bilimleri ve ilgili mühendislik disiplinine özgü konularda yeterli bilgi birikimi; bu alanlardaki kurumsal ve uygulamalı bilgileri, karmaşık mühendislik problemlerinde kullanabilme becerisi.",
+             "formüle etme,modelleme,çözme", "Karmaşık mühendislik problemlerini saptama, tanımlama, formüle etme ve çözme becerisi; bu amaçla uygun analiz ve modelleme yöntemlerini seçme ve uygulama becerisi.",
+              "süreç ve sistemleri analiz etme", "	Karmaşık bir sistemi, süreci, cihazı veya ürünü gerçekçi kısıtlar ve koşullar altında, belirli gereksinimleri karşılayacak şekilde tasarlama becerisi; bu amaçla modern tasarım yöntemlerini uygulama becerisi.",
+               "bilgi teknolojileri kullanımı", "Mühendislik uygulamalarında karşılaşılan karmaşık problemlerin analizi ve çözümü için gerekli olan modern teknik ve araçları geliştirme, seçme ve kullanma becerisi; bilişim teknolojilerini etkin bir şekilde kullanma becerisi.",
+                "deney tasarımı,analizi,sonuçlandırması ve yorumlama", "Karmaşık mühendislik problemlerinin veya disipline özgü araştırma konularının incelenmesi için deney tasarlama, deney yapma, veri toplama, sonuçları analiz etme ve yorumlama becerisi.",
+                 "bireysel ve takım içi çalışma", "	Disiplin içi ve çok disiplinli takımlarda etkin biçimde çalışma becerisi; bireysel çalışma becerisi.",
+            "sözlü ve yazılı iletişim", "	Türkçe sözlü ve yazılı etkin iletişim kurma becerisi; en az bir yabancı dil bilgisi; etkili rapor yazma ve yazılı raporları anlama, tasarım ve üretim raporları hazırlayabilme, etkin sunum yapabilme, açık ve anlaşılır talimat verme, alma becerisi.", 
+            "yaşam boyu öğrenme farkındalığı", "	Yaşam boyu öğrenmenin gerekliliği bilinci; bilgiye erişebilme, bilim ve teknolojideki gelişmeleri izleme ve kendini sürekli yenileme becerisi.",
+             "etik farkındalığı", "Etik ilkelerine uygun davranma, mesleki ve etik sorumluluk bilinci; mühendislik uygulamalarında kullanılan standartlar hakkında bilgi",
+              "iş hayatı,yenilikçilik ve sürdürülebilirlik", "Proje yönetimi, risk yönetimi ve değişiklik yönetimi gibi, iş hayatındaki uygulamalar hakkında bilgi; girişimcilik, yenilikçilik hakkında farkındalık; sürdürülebilir kalkınma hakkında bilgi.",
+               "sağlık,çevre,güvenlik ve hukuksal sonuçları farkındalık", "Mühendislik uygulamalarının evrensel ve toplumsal boyutlarda sağlık, çevre ve güvenlik üzerindeki etkileri ve çağın mühendislik alanına yansıyan sorunları hakkında bilgi; mühendislik çözümlerinin hukuksal sonuçları konusunda farkındalık.",
+                "kodlama,doğrulama,sınama", "	Kodlama, doğrulama, sınama ve hata ayıklama konularını da içerecek şekilde karmaşık yazılım sistemleri geliştirebilmek."
+            
+        };
+    }
+
+        
+        <table>
+        <caption>ÇIKTI PUANLAMA TABLOSU</caption>
+        <!-- Satır ve Sütun Başlıkları -->
+        <tr>
+            <th></th> <!-- Boş köşe -->
+            <!-- Sütun başlıkları -->
+            <th>Anahtar Kelimeler</th>
+            <th>Tanım</th>
+        </tr>
+     
+        @for (int i = 1; i <= 12; i++)
+        {
+            <tr>
+                <!-- Satır başlıkları -->
+                <th>P-@i  </th>
+                <!-- 12 sütun oluştur -->
+                @for (int j = 1; j <= 2; j++)
+                {
+                    <td>@metinler[(i - 1) * 2 + (j - 1)]</td>
+                }
+            </tr>
+        }
+        </table>
+        <table>
+        
+        
+        <!-- Satır ve Sütun Başlıkları -->
+        <tr>
+            <th></th> <!-- Boş köşe -->
+            <!-- Sütun başlıkları -->
+            @{
+                
+
+                // Sütun başlıklarını döngü ile oluştur
+                for (int j = 1; j < 13; j++)
+                {
+                    <th>P-@j</th>
+                }
+            }
+        </tr>
+     
+        @for (int i = 1; i <= 8; i++)
+        {
+            <tr>
+                <!-- Satır başlıkları -->
+                <th>Ö-@i</th>
+                <!-- 12 sütun oluştur -->
+                @for (int j = 1; j <= 12; j++)
+                {
+                    <!-- Her hücre için içerik belirt -->
+                    <!-- Metin alanı ekleyerek tıklama olayını kaldır -->
+                    <td><input id="cell-@i-@j" type="number" min="1" max="5" onblur="addNote(this)" onkeypress="return event.keyCode != 13;"></td>
+                }
+            </tr>
+        }
+    </table>
+
+    <div id="total"></div>
+    
+    <script>
+        function addNote(input) {
+        var note = parseInt(input.value);
+        if (!isNaN(note) && note >= 1 && note <= 5) {
+            input.value = note; // Değer input alanına yazdırılıyor
+        } else {
+            alert("Geçersiz not. Lütfen 1 ile 5 arasında bir sayı girin.");
+        }
+    }
+        function calculateTotal() {
+        var total = 0;
+        // Her satırı dolaş
+        for (var i = 1; i <= 8; i++) {
+            // Her sütunu dolaş
+            for (var j = 1; j <= 12; j++) {
+                var input = document.getElementById("cell-" + i + "-" + j);
+                if (input !== null && input.value !== "") { // Eğer input varsa ve değeri boş değilse
+                    total += parseInt(input.value); // Değeri toplama ekle
+                }
+            }
+        }
+        // Toplamı tablonun altındaki bir hücrede göster
+        var totalCell = document.getElementById("total");
+        if (totalCell !== null) {
+            totalCell.textContent = "Toplam: " + total;
+        }
+    }
+    
+    </script>
+    
+
+
+
+
+</body>
+
+
+</html>
