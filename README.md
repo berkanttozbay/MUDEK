@@ -1,0 +1,1 @@
+( MUDEK Değerlendirme Sistemi Web Uygulaması ) Öğretmen girişi olan ve çeşitli ders ekleme , ders çıktıları ekleyip listeleme , değerlendirme ve notlandırma gibi özellikler yapılabilen bir web uygulamasıdır.
